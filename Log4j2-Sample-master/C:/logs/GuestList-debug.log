@@ -1,0 +1,67 @@
+2018-04-10T02:53:24,284 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T02:53:27,032 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T02:53:27,381 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T02:56:43,915 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T02:56:46,312 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T02:57:05,844 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T02:57:08,726 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T02:57:09,145 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T02:57:38,873 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 137 onConnect on connect
+2018-04-10T02:57:39,049 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 137 onConnect on connect
+2018-04-10T02:57:39,067 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 67 loadClubListFromDatabase start executing loadClubListFromDatabase method
+2018-04-10T02:57:39,068 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 68 loadClubListFromDatabase Request parameter: {"action":"loadClubListFromDatabase","city":"Mumbai"}
+2018-04-10T02:57:39,396 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 112 loadClubListFromDatabase end executing loadClubListFromDatabase method, sent data
+2018-04-10T02:59:14,224 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 144 onDisconnect on disconnect
+2018-04-10T02:59:14,225 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 144 onDisconnect on disconnect
+2018-04-10T02:59:23,263 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 137 onConnect on connect
+2018-04-10T02:59:23,519 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 137 onConnect on connect
+2018-04-10T02:59:23,523 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 67 loadClubListFromDatabase start executing loadClubListFromDatabase method
+2018-04-10T02:59:23,524 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 68 loadClubListFromDatabase Request parameter: {"action":"loadClubListFromDatabase","city":"Mumbai"}
+2018-04-10T02:59:23,904 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 112 loadClubListFromDatabase end executing loadClubListFromDatabase method, sent data
+2018-04-10T02:59:35,384 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 137 onConnect on connect
+2018-04-10T02:59:35,394 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 255 getEventDetailsFromDatabase start executing getEventDetailsFromDatabase method
+2018-04-10T02:59:35,395 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 256 getEventDetailsFromDatabase Request parameter: {"action":"getEventDetailsFromDatabase","clubid":"99999"}
+2018-04-10T02:59:35,740 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 294 getEventDetailsFromDatabase end executing getEventDetailsFromDatabase method, sent data
+2018-04-10T02:59:35,740 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 120 getTicketdetailsFromDatabase start executing getTicketdetailsFromDatabase method
+2018-04-10T02:59:36,084 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 168 getTicketdetailsFromDatabase end executing getTicketdetailsFromDatabase method, sent data
+2018-04-10T02:59:47,779 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 137 onConnect on connect
+2018-04-10T03:04:49,699 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:04:52,604 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:05:19,906 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:05:22,817 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:05:23,217 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T03:05:37,667 INFO  [GuestList][nioEventLoopGroup-3-2|ClubServer] 137 onConnect on connect
+2018-04-10T03:05:37,958 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 137 onConnect on connect
+2018-04-10T03:05:37,974 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 67 loadClubListFromDatabase start executing loadClubListFromDatabase method
+2018-04-10T03:05:37,975 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 68 loadClubListFromDatabase Request parameter: {"action":"loadClubListFromDatabase","city":"Mumbai"}
+2018-04-10T03:05:38,279 INFO  [GuestList][nioEventLoopGroup-3-4|ClubServer] 113 loadClubListFromDatabase end executing loadClubListFromDatabase method, sent data
+2018-04-10T03:05:49,004 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 137 onConnect on connect
+2018-04-10T03:05:49,016 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 260 getEventDetailsFromDatabase start executing getEventDetailsFromDatabase method
+2018-04-10T03:05:49,018 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 261 getEventDetailsFromDatabase Request parameter: {"action":"getEventDetailsFromDatabase","clubid":"99999"}
+2018-04-10T03:05:49,334 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 300 getEventDetailsFromDatabase end executing getEventDetailsFromDatabase method, sent data
+2018-04-10T03:05:49,336 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 121 getTicketdetailsFromDatabase start executing getTicketdetailsFromDatabase method
+2018-04-10T03:05:49,337 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 122 getTicketdetailsFromDatabase Request parameter: {"action":"getEventDetailsFromDatabase","clubid":"99999"}
+2018-04-10T03:05:49,643 INFO  [GuestList][nioEventLoopGroup-3-6|ClubServer] 171 getTicketdetailsFromDatabase end executing getTicketdetailsFromDatabase method, sent data
+2018-04-10T03:06:30,348 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 137 onConnect on connect
+2018-04-10T03:06:30,362 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 357 getOffersFromDatabase start executing getOffersFromDatabase method
+2018-04-10T03:06:30,363 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 358 getOffersFromDatabase Request parameter: {"action":"getOffersFromDatabase"}
+2018-04-10T03:06:30,705 INFO  [GuestList][nioEventLoopGroup-3-8|ClubServer] 418 getOffersFromDatabase end executing getOffersFromDatabase method, sent data
+2018-04-10T03:12:12,317 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:12:15,592 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:12:16,502 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T03:38:47,620 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:38:50,556 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:38:51,419 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T03:40:09,470 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:40:12,008 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:40:12,519 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T03:42:23,824 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:42:26,856 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:42:27,700 INFO  [GuestList][main|ClubServer] 150 main server started
+2018-04-10T03:44:21,415 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:44:24,201 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:44:50,872 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:44:53,497 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:56:53,223 INFO  [GuestList][main|ClubServer] 45 createDBConnection MySQL JDBC Driver Registered!
+2018-04-10T03:56:56,238 INFO  [GuestList][main|ClubServer] 59 createDBConnection You made it, take control your database now!
+2018-04-10T03:56:57,177 INFO  [GuestList][main|ClubServer] 150 main server started
