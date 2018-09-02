@@ -1007,6 +1007,77 @@ public class DBHelper {
 		
 	}
 	
+	
+	public String insertNewEventDetails(JSONObject orderJobj, DataSource ds) throws SQLException {
+		
+		PreparedStatement preparedStmtx = null;
+		Connection connection = ds.getConnection();
+		
+		ResultSet resultSetx;
+		
+		String reply="success";
+		
+		String verifyEventDetailSQL = "SELECT * FROM eventdetails WHERE clubid = ? AND date = ?";
+		
+		String deleteEventDetailSQL = "DELETE FROM eventdetails WHERE clubid = ? AND date = ?";
+		
+		String insertEventDetailSQL = "INSERT INTO eventdetails (clubid,  clubname, djname, music, date, imageURL ) "
+				+ " VALUES  ( ?, ? , ?, ?, ? , ?)";
+		
+		try {
+			connection.setAutoCommit(false);
+			
+			String clubid = orderJobj.getString(Constants.CLUB_ID);
+			String clubname = orderJobj.getString(Constants.CLUB_NAME);
+			String djname = orderJobj.getString(Constants.DJ_NAME);
+			String music = orderJobj.getString(Constants.MUSIC);
+			String eventDate = orderJobj.getString(Constants.EVENTDATE);
+			//eventDate = Utill.changeDateFormate(eventDate);
+			String imageURL = "vichi";//orderJobj.getString(Constants.IMAGE_URL);
+			
+			
+			preparedStmtx = connection.prepareStatement(deleteEventDetailSQL);
+			preparedStmtx.setString(1, clubid);
+			preparedStmtx.setString(2, eventDate);
+			preparedStmtx.execute();
+//			while(resultSetx.next()) {//if this true means already EVENT exist for date
+//				reply = "exist";
+//			}
+			
+			if(true) {
+				preparedStmtx = connection.prepareStatement(insertEventDetailSQL);
+				preparedStmtx.setString(1, clubid);
+				preparedStmtx.setString(2, clubname);
+				preparedStmtx.setString(3, djname);
+				preparedStmtx.setString(4, music);
+				preparedStmtx.setString(5, eventDate);
+				preparedStmtx.setString(6, imageURL);
+				boolean isInserted = preparedStmtx.execute();
+				
+			}
+			
+			connection.commit();
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			reply = "fail";
+		}finally {
+			connection.setAutoCommit(true);
+			if (preparedStmtx != null) {
+				preparedStmtx.close();
+            }
+            if (connection != null) {
+            	connection.close();
+            }
+		}
+		
+		
+		return reply;
+		
+	}
+	
+	
 	public JSONObject getDataForReportChartFromDatabase(JSONObject orderJobj, DataSource ds) throws SQLException {
 		log.info("start executing inserOrderDetails method");
 		log.info("Request parameter: "+orderJobj.toString());
@@ -1070,6 +1141,13 @@ public class DBHelper {
 			
 		}catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if (preparedStmt != null) {
+            	preparedStmt.close();
+            }
+            if (connection != null) {
+            	connection.close();
+            }
 		}
 		allBookingDetailsObj.put("bookedTableDetailsList", bookedTableDetailsList);
 		allBookingDetailsObj.put("bookedPassDetailsList", bookedPassDetailsList);

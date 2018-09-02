@@ -135,12 +135,10 @@ public class ClubServer {
 					JSONObject jObj  = dbhelper.getDataForReportChartFromDatabase(eventJObj, dataSource);
 					client.sendMessage(jObj.toString());
 				}
-//				else if("getTabledetailsByDateFromDatabase".equalsIgnoreCase(action)) {
-//					JSONObject jObj = new JSONObject();
-//					List<JSONObject> tableDetailsList = dbhelper.getTabledetailsByDateFromDatabase(eventJObj, dataSource);
-//					jObj.put("tableDetailsList", tableDetailsList);
-//					client.sendMessage(jObj.toString());
-//				}
+				else if("insertNewEventDetails".equalsIgnoreCase(action)) {
+					String  reply  = dbhelper.insertNewEventDetails(eventJObj, dataSource);
+					client.sendMessage(reply);
+				}
 
 			}
 		});
