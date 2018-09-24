@@ -34,7 +34,7 @@ public class CreateHTMLFile {
 			
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			
-			String URL= "jdbc:mysql://192.168.43.64:3306/club?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT&verifyServerCertificate=false&useSSL=false";
+			String URL= "jdbc:mysql://199.180.133.121:3306/club?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT&verifyServerCertificate=false&useSSL=false";
 	        
 //	        ConnectionFactory cf = new DriverManagerConnectionFactory(
 //	        		URL,//"jdbc:mysql://172.20.10.8:3306/club?verifyServerCertificate=false&useSSL=false",
@@ -48,7 +48,7 @@ public class CreateHTMLFile {
 	      
 	      // our SQL SELECT query. 
 	      // if you only need a few columns, specify them by name instead of using "*"
-	      String query = "SELECT * FROM tablesdata WHERE clubid = '99999' AND eventdate = '30/Aug/2018' ";
+	      String query = "SELECT * FROM tablesdata WHERE clubid = '99999' AND eventdate = '10/Sep/2018' ";
 
 	      // create the java statement
 	      Statement st = conn.createStatement();

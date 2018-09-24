@@ -139,6 +139,18 @@ public class ClubServer {
 					String  reply  = dbhelper.insertNewEventDetails(eventJObj, dataSource);
 					client.sendMessage(reply);
 				}
+				else if("getDefaultDataForUploadEventDetails".equalsIgnoreCase(action)) {
+					JSONObject jObj = new JSONObject();
+					
+					List<JSONObject> tableDefaultDetailsDataList = dbhelper.getTablesDefaultData(eventJObj, dataSource);
+					jObj.put("tableDefaultDetailsData", tableDefaultDetailsDataList);
+					
+					List<JSONObject>  passNguestlistDataDetailsList = dbhelper.getPassNguestListDefaultData(eventJObj, dataSource);
+					jObj.put("getPassNguestListDefaultData", passNguestlistDataDetailsList);
+					
+					client.sendMessage(jObj.toString());
+					
+				}
 
 			}
 		});

@@ -46,6 +46,24 @@ public class Utill {
 		
 	}
 	
+	public static String getDayFromDate(String date){
+        String MyDay = "";
+
+        try {
+            // date/Month/year
+            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+            Date MyDate = newDateFormat.parse(date);
+            newDateFormat.applyPattern("EEEE");
+            MyDay = newDateFormat.format(MyDate);
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return MyDay;
+
+    }
+	
 	
 	public static HashMap<String, Integer> getPassMapFromTicketDetails(String ticketDetails){
 		//String str = "1 couple  and 2 girl and 3 stag is allowed"; 

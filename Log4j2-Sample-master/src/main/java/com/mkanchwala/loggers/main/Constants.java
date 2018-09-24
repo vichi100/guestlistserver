@@ -2,6 +2,8 @@ package com.mkanchwala.loggers.main;
 
 public class Constants {
 	
+	public static String USER_ID = "userId";
+	
 	public static String CLUB_ID = "clubid";
 	public static String PASSWORD = "password";
 	public static String CLUB_NAME = "clubname";
@@ -70,6 +72,10 @@ public class Constants {
   public static String DJNAME= "djname";
   public static String MUSIC= "music";
   
+  public static String IF_EVENT_EXIST= "eventexist";
+  
+  
+  
   
   //public static String EVENTDATE= "eventdate";
   public static String STARTTIME= "starttime";
@@ -94,15 +100,18 @@ public class Constants {
   
   public static String COORDS ="coords";
   
+
+  public static String TABLE_LAYOUT_URL = "http://199.180.133.121/imagemap/layouthtml/";//"/imagemap/layouthtml/";
+  
   //FOR DEV
-  final static String COMMON_FILE = "/Library/WebServer/Documents/imagemap/layouthtml/commonlayout.html";
-	final static String TEMP_FILE_PATH = "/Library/WebServer/Documents/imagemap/temp/";
-	final static String RENAME_FILE_PATH = "/Library/WebServer/Documents/imagemap/layouthtml/"; 
+//  final static String COMMON_FILE = "/Library/WebServer/Documents/imagemap/layouthtml/commonlayout.html";
+//	final static String TEMP_FILE_PATH = "/Library/WebServer/Documents/imagemap/temp/";
+//	final static String RENAME_FILE_PATH = "/Library/WebServer/Documents/imagemap/layouthtml/"; 
   
   // FOR PRODUCTION
-//  final static String COMMON_FILE = "/Library/WebServer/Documents/imagemap/commonlayout.html";
-//  final static String TEMP_FILE_PATH = "/Users/vichi/";
-//  final static String RENAME_FILE_PATH = "/Library/WebServer/Documents/imagemap/";
+  final static String COMMON_FILE = "/var/www/guestlist/imagemap/layouthtml/commonlayout.html";
+  final static String TEMP_FILE_PATH = "/var/www/guestlist/imagemap/temp/";
+  final static String RENAME_FILE_PATH = "/var/www/guestlist/imagemap/layouthtml/";
 	
 	
 	

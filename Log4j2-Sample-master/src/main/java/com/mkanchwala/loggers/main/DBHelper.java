@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mkanchwala.loggers.file.TableRowData;
@@ -57,24 +58,24 @@ public class DBHelper {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();;
 		
 
-		log.info("MySQL JDBC Driver Registered!");
+			log.info("MySQL JDBC Driver Registered!");
 
 		
 			
 			connectionPool = new GenericObjectPool();
 	        connectionPool.setMaxActive(100);
 	        
-//	        ConnectionFactory cf = new DriverManagerConnectionFactory(
-//	        		"jdbc:mysql://199.180.133.121:3306/club",
-//	        		"root",
-//	        		"vichi123");// on server
-	        
-	        String URL= "jdbc:mysql://192.168.43.64:3306/club?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT&verifyServerCertificate=false&useSSL=false";
-	        
 	        ConnectionFactory cf = new DriverManagerConnectionFactory(
-	        		URL,//"jdbc:mysql://172.20.10.8:3306/club?verifyServerCertificate=false&useSSL=false",
+	        		"jdbc:mysql://199.180.133.121:3306/club",
 	        		"root",
-	        		"vichi123");// local mac
+	        		"vichi123");// on server
+//	        
+//	        String URL= "jdbc:mysql://192.168.0.5:3306/club?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT&verifyServerCertificate=false&useSSL=false";
+//	        
+//	        ConnectionFactory cf = new DriverManagerConnectionFactory(
+//	        		URL,//"jdbc:mysql://172.20.10.8:3306/club?verifyServerCertificate=false&useSSL=false",
+//	        		"root",
+//	        		"vichi123");// local mac
 	        
 	        PoolableConnectionFactory pcf =
 	                new PoolableConnectionFactory(cf, connectionPool,
@@ -154,7 +155,7 @@ public class DBHelper {
 			ApartmentClient wc = new ApartmentClient();
 			DirectionResponse direction = wc.getDirectionInfo(userLatLong,latlongsb.toString());
 			
-			for(int i=0; i<= addCount-1; i++) {
+			for(int i=0; i< addCount-1; i++) {
 				JSONObject clubObj = clubList.get(i);
 				clubObj.put(Constants.DISTANCE, direction.getRows().get(0).getElements().get(i).getDistance().getValue());
 				//System.out.println("Distance  in metr : "+direction.getRows().get(0).getElements().get(i).getDistance().getValue());
@@ -329,10 +330,7 @@ public class DBHelper {
 
 	}
 	
-	
-	
-	
-	public List<JSONObject> getbookedTicketFromDatabase(JSONObject jObj, DataSource ds) throws SQLException {
+	public List<JSONObject> getbookedTicketFromDatabaseForPro(JSONObject jObj, DataSource ds) throws SQLException {
 
 		log.info("start executing getbookedTicketFromDatabase method");
 		log.info("Request parameter: "+jObj.toString());
@@ -410,6 +408,84 @@ public class DBHelper {
 
 	}
 	
+	
+	
+	
+	public List<JSONObject> getbookedTicketFromDatabase(JSONObject jObj, DataSource ds) throws SQLException {
+
+		log.info("start executing getbookedTicketFromDatabase method");
+		log.info("Request parameter: "+jObj.toString());
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = ds.getConnection();
+
+		List<JSONObject> bookedTicketDetailsList = new ArrayList<JSONObject>();
+		String customerId = jObj.getString(Constants.CUSTOMERID);
+		
+		try { 
+			preparedStatement = connection
+					.prepareStatement("SELECT * FROM bookingdetails WHERE customerId = ? order by bookingtime DESC ");
+			
+			
+			preparedStatement.setString(1, customerId);
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				JSONObject bookeTticketDetailsObj = new JSONObject();
+				
+				String cutomername = resultSet.getString(Constants.CUSTOMERNAME);
+				bookeTticketDetailsObj.put(Constants.CUSTOMERNAME, cutomername);
+				String cutomerId = resultSet.getString(Constants.CUSTOMERID);
+				bookeTticketDetailsObj.put(Constants.CUSTOMERID, cutomerId);
+				
+				String mobile = resultSet.getString(Constants.MOBILE);
+				bookeTticketDetailsObj.put(Constants.MOBILE, mobile);
+				String clubname = resultSet.getString(Constants.CLUB_NAME);
+				bookeTticketDetailsObj.put(Constants.CLUB_NAME, clubname);
+				String clubid = resultSet.getString(Constants.CLUB_ID);
+				bookeTticketDetailsObj.put(Constants.CLUB_ID, clubid);
+				String QRnumber = resultSet.getString(Constants.QRNUMBER);
+				bookeTticketDetailsObj.put(Constants.QRNUMBER, QRnumber);
+				String tickettype = resultSet.getString(Constants.TICKETTYPE);
+				bookeTticketDetailsObj.put(Constants.TICKETTYPE, tickettype);
+				String eventDatex = resultSet.getString(Constants.EVENTDATE);
+				bookeTticketDetailsObj.put(Constants.EVENTDATE, eventDatex);
+				String cost = resultSet.getString(Constants.COST);
+				bookeTticketDetailsObj.put(Constants.COST, cost);
+				String costAfterDiscount = resultSet.getString(Constants.COSTAFTERDISCOUNT);
+				bookeTticketDetailsObj.put(Constants.COSTAFTERDISCOUNT, costAfterDiscount);
+				String remainingAmt = resultSet.getString(Constants.REMAINING_AMOUNT);
+				bookeTticketDetailsObj.put(Constants.REMAINING_AMOUNT, remainingAmt);
+				String qrNumber = resultSet.getString(Constants.QRNUMBER);
+				bookeTticketDetailsObj.put(Constants.QRNUMBER, qrNumber);
+				
+				String ticketDetails = resultSet.getString(Constants.TICKET_DETAILS);
+				bookeTticketDetailsObj.put(Constants.TICKET_DETAILS, ticketDetails);
+				
+				bookedTicketDetailsList.add(bookeTticketDetailsObj);
+				
+				
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.info(e.getMessage());
+		}finally {
+            if (preparedStatement != null) {
+            	preparedStatement.close();
+            }
+            if (connection != null) {
+            	connection.close();
+            }
+        }
+		
+		log.info("end executing getbookedTicketFromDatabase method, sent data");
+		return bookedTicketDetailsList;
+
+	}
+	
 	public List<JSONObject> getEventDetailsFromDatabase(JSONObject jObj, DataSource ds) throws SQLException {
 
 		log.info("start executing getEventDetailsFromDatabase method");
@@ -426,7 +502,7 @@ public class DBHelper {
 		//String clubidx = "99999";
 		try {
 			preparedStatement = connection
-					.prepareStatement("SELECT * FROM eventdetails WHERE clubid = ?");
+					.prepareStatement("SELECT * FROM eventdetails WHERE clubid = ? order by STR_TO_DATE(date,'%d/%b/%Y')  ASC ");
 			preparedStatement.setString(1, clubidx);
 			resultSet = preparedStatement.executeQuery();
 			
@@ -634,7 +710,7 @@ public class DBHelper {
 	
 	
 	public  List<JSONObject> getTabledetailsByDateForClubFromDatabase(JSONObject jObj, DataSource ds) throws SQLException {
-		log.info("start executing getOffersForClubFromDatabase method");
+		log.info("start executing getTabledetailsByDateForClubFromDatabase method");
 		log.info("Request parameter: "+jObj.toString());
 		
 		PreparedStatement preparedStatement = null;
@@ -680,8 +756,15 @@ public class DBHelper {
 				String coords = resultSet.getString(Constants.COORDS);
 				bookeTableDetailsObj.put(Constants.COORDS, coords);
 				
-				String layoutURL = resultSet.getString(Constants.LAYOUT_URL);
+				String eventdate = resultSet.getString(Constants.EVENTDATE);
+				eventdate = eventdate.replaceAll("/", "");
+		        String destFileName = clubidx+"-"+eventdate+".html";
+
+		        String layoutURL = Constants.TABLE_LAYOUT_URL+destFileName;
+		        
 				bookeTableDetailsObj.put(Constants.LAYOUT_URL, layoutURL);
+				
+				
 				String eventdatex = resultSet.getString(Constants.EVENTDATE);
 				bookeTableDetailsObj.put(Constants.EVENTDATE, eventdatex);
 				
@@ -706,7 +789,7 @@ public class DBHelper {
 	}
 	
 	public  List<JSONObject> getTabledetailsByDateFromDatabase(JSONObject jObj, DataSource ds) throws SQLException {
-		log.info("start executing getOffersForClubFromDatabase method");
+		log.info("start executing getTabledetailsByDateFromDatabase method");
 		log.info("Request parameter: "+jObj.toString());
 		
 		PreparedStatement preparedStatement = null;
@@ -752,10 +835,16 @@ public class DBHelper {
 				String coords = resultSet.getString(Constants.COORDS);
 				bookeTableDetailsObj.put(Constants.COORDS, coords);
 				
-				String layoutURL = resultSet.getString(Constants.LAYOUT_URL);
-				bookeTableDetailsObj.put(Constants.LAYOUT_URL, layoutURL);
 				String eventdatex = resultSet.getString(Constants.EVENTDATE);
 				bookeTableDetailsObj.put(Constants.EVENTDATE, eventdatex);
+				
+				eventdatex = eventdatex.replaceAll("/", "");
+		        String destFileName = clubidx+"-"+eventdatex+".html";
+
+		        String layoutURL = Constants.TABLE_LAYOUT_URL+destFileName;
+		        
+				bookeTableDetailsObj.put(Constants.LAYOUT_URL, layoutURL);
+				
 				
 				
 				String isBooked = resultSet.getString(Constants.ISBOOKED);
@@ -775,6 +864,130 @@ public class DBHelper {
 		
 		return bookedTableDetailsList;
 		
+	}
+	
+	
+	
+	
+	public List<JSONObject> getPassNguestListDefaultData(JSONObject jObj, DataSource ds) throws SQLException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = ds.getConnection();
+		
+		String clubid = jObj.getString(Constants.CLUB_ID);
+		String eventDate = jObj.getString(Constants.EVENTDATE);
+		String day = "tuesday";//Utill.getDayFromDate(eventDate);
+		
+		String getPassNguestListDefaultDataSQL = "SELECT * FROM ticketdefaultdatadetails WHERE clubid = ? AND day = ?";
+		//JSONObject passNguestlistDataDetailsMAP = new JSONObject();
+		List<JSONObject>  passNguestlistDataDetailsList = new ArrayList<JSONObject>();
+		
+		try {
+			
+			preparedStatement = connection
+					.prepareStatement(getPassNguestListDefaultDataSQL);
+			preparedStatement.setString(1, clubid);
+			preparedStatement.setString(2, day.toLowerCase());
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				JSONObject passNguestlistDataDetailsObj = new JSONObject();
+				
+				String clubidx = resultSet.getString(Constants.CLUB_ID);
+				String type = resultSet.getString(Constants.TICKET_TYPE);
+				String category = resultSet.getString(Constants.CATEGORY);
+				String cost = resultSet.getString(Constants.COST);
+				String dayx = resultSet.getString(Constants.DAY);
+				String totaltickets = resultSet.getString(Constants.TOTAL_TICKETS);
+				
+				passNguestlistDataDetailsObj.put(Constants.CLUB_ID, clubidx);
+				passNguestlistDataDetailsObj.put(Constants.TICKET_TYPE, type);
+				passNguestlistDataDetailsObj.put(Constants.CATEGORY, category);
+				passNguestlistDataDetailsObj.put(Constants.COST, cost);
+				passNguestlistDataDetailsObj.put(Constants.DAY, dayx);
+				passNguestlistDataDetailsObj.put(Constants.TOTAL_TICKETS, totaltickets);
+				
+				passNguestlistDataDetailsList.add(passNguestlistDataDetailsObj);
+				
+				
+				
+			}
+			
+			
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}finally {
+            if (preparedStatement != null) {
+            	preparedStatement.close();
+            }
+            if (connection != null) {
+            	connection.close();
+            }
+        }
+		log.info("end executing getPassNguestListDefaultData method, sent data");
+		return passNguestlistDataDetailsList;
+	}
+	
+	public List<JSONObject> getTablesDefaultData(JSONObject jObj, DataSource ds) throws SQLException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connection = ds.getConnection();
+		
+		
+		String clubid = jObj.getString(Constants.CLUB_ID);
+		String eventDate = jObj.getString(Constants.EVENTDATE);
+		String day = "monday";//Utill.getDayFromDate(eventDate);
+		
+		String getTableDefalutDataSQL = "SELECT * FROM defaulttablesdata WHERE clubid = ? AND day = ? ORDER BY tablenumber ASC";
+		List<JSONObject> ticketDetailsList = new ArrayList<JSONObject>();
+		
+		try {
+			preparedStatement = connection
+					.prepareStatement(getTableDefalutDataSQL);
+			preparedStatement.setString(1, clubid);
+			preparedStatement.setString(2, day.toLowerCase());
+			resultSet = preparedStatement.executeQuery();
+			
+			String insretTableDataDetailsSQL = "INSERT INTO tablesdata ( clubid, clubname, tableid, tablenumber, details, tabletype, size, cost, coords, layoutURL, eventdate, booked) " + 
+					"VALUES (?, ? , ?, ?, ? , ?, ?, ? , ?, ?, ? , ? )";
+			
+			while (resultSet.next()) {
+				JSONObject tableDefaultDataDetailsObj = new JSONObject();
+				String clubidx = resultSet.getString(Constants.CLUB_ID);
+				String tableId = resultSet.getString(Constants.TABLE_ID);
+				String tableNumber = resultSet.getString(Constants.TABLE_NUMBER);
+				String details = resultSet.getString(Constants.DETAILS);
+				String tableType = resultSet.getString(Constants.TABLE_TYPE);
+				String size = resultSet.getString(Constants.SIZE);
+				String cost = resultSet.getString(Constants.COST);
+				String coords = resultSet.getString(Constants.COORDS);
+				String layoutURL = resultSet.getString(Constants.LAYOUT_URL);
+				String dayx = resultSet.getString(Constants.DAY);
+				
+				tableDefaultDataDetailsObj.put(Constants.CLUB_ID, clubidx);
+				tableDefaultDataDetailsObj.put(Constants.TABLE_ID, tableId);
+				tableDefaultDataDetailsObj.put(Constants.TABLE_NUMBER, tableNumber);
+				tableDefaultDataDetailsObj.put(Constants.DETAILS, details);
+				tableDefaultDataDetailsObj.put(Constants.TABLE_TYPE, tableType);
+				tableDefaultDataDetailsObj.put(Constants.SIZE, size);
+				tableDefaultDataDetailsObj.put(Constants.COST, cost);
+				tableDefaultDataDetailsObj.put(Constants.COORDS, coords);
+				tableDefaultDataDetailsObj.put(Constants.LAYOUT_URL, layoutURL);
+				tableDefaultDataDetailsObj.put(Constants.DAY, dayx);
+				//tableDefaultDataDetailsMAP.put(Constants.TABLE_NUMBER, tableDefaultDataDetailsObj);
+				ticketDetailsList.add(tableDefaultDataDetailsObj);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+            if (preparedStatement != null) {
+            	preparedStatement.close();
+            }
+            if (connection != null) {
+            	connection.close();
+            }
+        }
+		log.info("end executing getTablesDefaultData method, sent data");
+		return ticketDetailsList;
 	}
 	
 	
@@ -865,7 +1078,7 @@ public class DBHelper {
 			log.info("Request parameter: "+clubDataDetails.toString());
 			connection = ds.getConnection();
 			preparedStmt = null;
-			String clubName = clubDataDetails.getString(Constants.CLUB_NAME);
+			String userId = clubDataDetails.getString(Constants.USER_ID);
 			String clubid = clubDataDetails.getString(Constants.CLUB_ID);
 			String password = clubDataDetails.getString(Constants.PASSWORD);
 			String date = clubDataDetails.getString(Constants.EVENTDATE);//Utill.getTodayDate();
@@ -875,6 +1088,7 @@ public class DBHelper {
 					+ " VALUES  ( ?, ? , ? )";
 			String updatePasswordSQL = "UPDATE clubdatalogin SET password = ? WHERE clubid = ? ";
 			String verifyClubLoginDetailsSQL = "SELECT * FROM  clubdatalogin WHERE clubid = ? ";
+			String getClubNameSQL = "SELECT clubname FROM clubdetails where clubid = ? ";
 			
 			//verify first if club is already in data base
 			preparedStmt = connection
@@ -908,7 +1122,7 @@ public class DBHelper {
 				// club details not is db logging first time
 				preparedStmt = connection
 						.prepareStatement(insertClubLoginDetailsSQL);
-				preparedStmt.setString(1, clubName);
+				preparedStmt.setString(1, userId);
 				preparedStmt.setString(2, clubid);
 				preparedStmt.setString(3, password);
 				preparedStmt.execute();
@@ -922,9 +1136,9 @@ public class DBHelper {
 			preparedStmt.setString(1, clubid);
 			preparedStmt.setString(2, date);
 			resultSet = preparedStmt.executeQuery();
-			
+			boolean isEventForToday = false;
 			while (resultSet.next()) {
-				
+				isEventForToday = true;
 				
 				String clubidn = resultSet.getString(Constants.CLUB_ID);
 				eventDetailsObj.put(Constants.CLUB_ID, clubidn);
@@ -938,6 +1152,20 @@ public class DBHelper {
 				eventDetailsObj.put(Constants.DATE, datex);
 				String imageURL = resultSet.getString(Constants.IMAGE_URL);
 				eventDetailsObj.put(Constants.IMAGE_URL, imageURL);
+				eventDetailsObj.put(Constants.IF_EVENT_EXIST, "yes");
+			}
+			
+			if(!isEventForToday) {
+				preparedStmt = connection
+						.prepareStatement(getClubNameSQL);
+				preparedStmt.setString(1, clubid);
+				resultSet = preparedStmt.executeQuery();
+				while (resultSet.next()) {
+					String clubname = resultSet.getString(Constants.CLUB_NAME);
+					eventDetailsObj.put(Constants.CLUB_NAME, clubname);
+					eventDetailsObj.put(Constants.IF_EVENT_EXIST, "no");
+				}
+				
 			}
 			
 			
@@ -1024,6 +1252,19 @@ public class DBHelper {
 		String insertEventDetailSQL = "INSERT INTO eventdetails (clubid,  clubname, djname, music, date, imageURL ) "
 				+ " VALUES  ( ?, ? , ?, ?, ? , ?)";
 		
+		
+		String deleteTicketDetailsSQL = "DELETE FROM ticketdetails WHERE clubid = ? AND date = ?";
+		
+		String insertTicketDetailsSQL = "INSERT INTO ticketdetails ( clubid, clubname, type, size, category, cost, details, Day, date, totaltickets, availbletickets)" + 
+				" VALUES (?, ? , ?, ?, ? , ?, ?, ? , ?, ?, ? )";
+		
+		String insretTableDataDetailsSQL = "INSERT INTO tablesdata ( clubid, clubname, tableid, tablenumber, details, tabletype, size, cost, coords, layoutURL, eventdate, booked) " + 
+				"VALUES (?, ? , ?, ?, ? , ?, ?, ? , ?, ?, ? , ? )";
+		
+		String deleteTableDataDetailsSQL = "DELETE FROM tablesdata WHERE clubid = ? AND eventdate = ?";
+		
+		
+		
 		try {
 			connection.setAutoCommit(false);
 			
@@ -1032,10 +1273,16 @@ public class DBHelper {
 			String djname = orderJobj.getString(Constants.DJ_NAME);
 			String music = orderJobj.getString(Constants.MUSIC);
 			String eventDate = orderJobj.getString(Constants.EVENTDATE);
+			String day = Utill.getDayFromDate(eventDate);
 			//eventDate = Utill.changeDateFormate(eventDate);
-			String imageURL = "vichi";//orderJobj.getString(Constants.IMAGE_URL);
+			String imageURL = orderJobj.getString(Constants.IMAGE_URL);
+			String tableDefaultDetailsDataListStr = orderJobj.getString("tableDefaultDetailsDataList");
+			JSONArray tableDefaultDetailsDataList = new JSONArray(tableDefaultDetailsDataListStr);
+			String passNguestListDefaultDataStr = orderJobj.getString("passNguestListDefaultData");
+			JSONArray passNguestListDefaultDataList = new JSONArray(passNguestListDefaultDataStr);
 			
 			
+			//Insert into event Details
 			preparedStmtx = connection.prepareStatement(deleteEventDetailSQL);
 			preparedStmtx.setString(1, clubid);
 			preparedStmtx.setString(2, eventDate);
@@ -1043,6 +1290,8 @@ public class DBHelper {
 //			while(resultSetx.next()) {//if this true means already EVENT exist for date
 //				reply = "exist";
 //			}
+			
+			
 			
 			if(true) {
 				preparedStmtx = connection.prepareStatement(insertEventDetailSQL);
@@ -1053,6 +1302,113 @@ public class DBHelper {
 				preparedStmtx.setString(5, eventDate);
 				preparedStmtx.setString(6, imageURL);
 				boolean isInserted = preparedStmtx.execute();
+				
+			}
+			
+			
+			// insert into ticketdetails table
+			
+			preparedStmtx = connection.prepareStatement(deleteTicketDetailsSQL);// deleting any old details
+			preparedStmtx.setString(1, clubid);
+			preparedStmtx.setString(2, eventDate);
+			preparedStmtx.execute();
+			
+			preparedStmtx = connection.prepareStatement(insertTicketDetailsSQL);
+			for(int i=0; i < passNguestListDefaultDataList.length(); i++) {
+				JSONObject jobj = passNguestListDefaultDataList.getJSONObject(i);
+				preparedStmtx.setString(1, clubid);
+				preparedStmtx.setString(2, clubname);
+				preparedStmtx.setString(3, jobj.getString(Constants.TICKET_TYPE));
+				preparedStmtx.setString(4, "0");
+				preparedStmtx.setString(5, jobj.getString(Constants.CATEGORY));
+				preparedStmtx.setString(6, jobj.getString(Constants.COST));
+				preparedStmtx.setString(7, "");
+				preparedStmtx.setString(8, day.toLowerCase());
+				preparedStmtx.setString(9, eventDate);
+				preparedStmtx.setString(10, jobj.getString(Constants.TOTAL_TICKETS));
+				preparedStmtx.setString(11, jobj.getString(Constants.TOTAL_TICKETS));
+				preparedStmtx.addBatch();
+			}
+			
+			preparedStmtx.executeBatch();
+			
+			
+			// insert into tablesdata table
+			String checkIfAnyTableIsBooked = "Select * from tablesdata where clubid = ? AND eventdate = ? and booked = 'booked'";
+			
+			boolean isTableAlreadyBooked = false;
+			preparedStmtx = connection.prepareStatement(checkIfAnyTableIsBooked);
+			preparedStmtx.setString(1, clubid);
+			preparedStmtx.setString(2, eventDate);
+			ResultSet resultSet =preparedStmtx.executeQuery();
+			while(resultSet.next()) {//if this true means already EVENT exist for date
+				isTableAlreadyBooked = true;
+				reply = "Partialy Success !!! since some table is already booked with your privious data which you had provided, Please contact support now";
+			}
+			
+			if(!isTableAlreadyBooked) {
+				
+				preparedStmtx = connection.prepareStatement(deleteTableDataDetailsSQL);// deleting any old details
+				preparedStmtx.setString(1, clubid);
+				preparedStmtx.setString(2, eventDate);
+				preparedStmtx.execute();
+				
+				
+				
+				
+				preparedStmtx = connection.prepareStatement(insretTableDataDetailsSQL);
+				for(int i=0; i < tableDefaultDetailsDataList.length(); i++) {
+					JSONObject jobj = tableDefaultDetailsDataList.getJSONObject(i);
+					preparedStmtx.setString(1, clubid);
+					preparedStmtx.setString(2, clubname);
+					preparedStmtx.setString(3, jobj.getString(Constants.TABLE_ID));
+					preparedStmtx.setString(4, jobj.getString(Constants.TABLE_NUMBER));
+					preparedStmtx.setString(5, jobj.getString(Constants.DETAILS));
+					preparedStmtx.setString(6, jobj.getString(Constants.TABLE_TYPE));
+					preparedStmtx.setString(7, jobj.getString(Constants.SIZE));
+					preparedStmtx.setString(8, jobj.getString(Constants.COST));
+					preparedStmtx.setString(9, jobj.getString(Constants.COORDS));
+					preparedStmtx.setString(10, jobj.getString(Constants.LAYOUT_URL));
+					preparedStmtx.setString(11, eventDate);
+					preparedStmtx.setString(12, "available");
+					preparedStmtx.addBatch();
+				}
+				preparedStmtx.executeBatch();
+				
+				// create HTML page to layout display
+				ConcurrentHashMap<String, TableRowData> tableDataMap = new ConcurrentHashMap<String, TableRowData>();
+				String verifyTableAvailable = "SELECT * FROM tablesdata WHERE clubid = ? AND eventdate = ? ";
+				preparedStmtx = connection.prepareStatement(verifyTableAvailable);
+				preparedStmtx.setString(1, clubid);
+				//preparedStmt.setString(2, tableId);
+				preparedStmtx.setString(2, eventDate);
+				resultSetx = preparedStmtx.executeQuery();
+				while(resultSetx.next()) {
+					TableRowData trd = new TableRowData();
+			        String clubidx = resultSetx.getString("clubid");
+			        trd.setClubid(clubidx);
+			        String tablenumber = resultSetx.getString("tablenumber");
+			        trd.setTablenumber(tablenumber);
+			        String tableid = resultSetx.getString("tableid");
+			        trd.setTableid(tableid);
+			        String isBooked = resultSetx.getString(Constants.ISBOOKED);
+			        String booked = resultSetx.getString("booked");
+			        trd.setBooked(booked);
+			        
+			        String tabletype = resultSetx.getString("tabletype");
+			        trd.setTabletype(tabletype);
+			        String coords = resultSetx.getString("coords");
+			        trd.setCoords(coords);
+			        
+			        String eventdate = eventDate.replaceAll("/", "");
+			        String destFileName = clubidx+"-"+eventdate+".html";
+
+			        String layoutURL = Constants.TABLE_LAYOUT_URL+destFileName;
+			        trd.setLayoutURL(layoutURL);
+			        tableDataMap.put(tableid, trd);
+
+				}
+				createHTML(clubid, tableDataMap, eventDate);
 				
 			}
 			
@@ -1329,8 +1685,11 @@ public class DBHelper {
 				        trd.setTabletype(tabletype);
 				        String coords = resultSetx.getString("coords");
 				        trd.setCoords(coords);
+				        
+				        String eventdate = eventDate.replaceAll("/", "");
+				        String destFileName = clubidx+"-"+eventdate+".html";
 
-				        String layoutURL = resultSetx.getString("layoutURL");
+				        String layoutURL = Constants.TABLE_LAYOUT_URL+destFileName;
 				        trd.setLayoutURL(layoutURL);
 				        tableDataMap.put(tableid, trd);
 
@@ -1395,7 +1754,7 @@ public class DBHelper {
 			e.printStackTrace();
 			log.info(e.getMessage());
 			// TODO: handle exception
-			return "fail";
+			return "fail !! Please contact support";
 		}finally {
             if (preparedStmt != null) {
             	preparedStmt.close();
@@ -1410,6 +1769,8 @@ public class DBHelper {
 		return "success";
 
 	}
+	
+	
 	
 	
 	
